@@ -1,11 +1,11 @@
-import React from 'react'
-import Sidebar from '../components/Sidebar';
+import React from 'react';
+import Home from './Home';
 import Hoja from '../components/Hoja';
 
 const Escritas = () => {
   return (
     <div>
-      <Sidebar/>
+      <Home/>
       <Hoja/>
     </div>
   )
