@@ -25,29 +25,16 @@ export const signInWithEmail = (email, password) => {
     .then((userCredential) => {
       // Inicio de sesión exitoso
       const user = userCredential.user;
-      const email = user.email;
-      if (email.endsWith("@est.ort.edu.ar")) {
-        // Si el correo electrónico tiene el dominio correcto
-        const name = user.displayName;
-        const profilePic = user.photoURL;
-        localStorage.setItem("name", name);
-        localStorage.setItem("email", email);
-        localStorage.setItem("profilePic", profilePic);
+      const name = user.displayName;
+      const profilePic = user.photoURL;
+      
+      localStorage.setItem("name", name);
+      localStorage.setItem("email", email);
+      localStorage.setItem("profilePic", profilePic);
 
-        alert("Log in exitoso");
-        window.location.reload();
-      } else {
-        // Si el correo electrónico no tiene el dominio correcto, eliminar la cuenta de usuario recién creada
-        user.delete()
-          .then(() => {
-            console.log("Usuario eliminado");
-          })
-          .catch((error) => {
-            console.log("Error al eliminar usuario:", error);
-          });
-
-        // Mostrar un mensaje de error
-        alert("No estas autorizado a ingresar a esta aplicación");
+      alert("Log in exitoso");
+      window.location.reload(); {
+      
       }
     })
     .catch((error) => {

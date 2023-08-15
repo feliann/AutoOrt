@@ -19,6 +19,7 @@ import {
 
 function App() {
   const [justifyActive, setJustifyActive] = useState('tab1');
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para rastrear el inicio de sesión
 
   const handleJustifyClick = (value) => {
     if (value === justifyActive) {
@@ -27,12 +28,26 @@ function App() {
 
     setJustifyActive(value);
   };
-
   const handleSignInWithEmail = (event) => {
     event.preventDefault();
     const email = document.getElementById('form3').value;
     const password = document.getElementById('form4').value;
-    signInWithEmail(email, password);
+
+    if (justifyActive === 'tab1') {
+      // Validación para pestaña 'Asistente' (@ort.edu.ar)
+      if (email.endsWith("@ort.edu.ar")) {
+        signInWithEmail(email, password);
+        setIsLoggedIn(true); // Marcar como inicio de sesión exitoso
+
+      } else {
+        alert("Solo los usuarios con @ort.edu.ar pueden iniciar sesión en esta pestaña.");
+      }
+    } else if (justifyActive === 'tab2') {
+      // Validación para pestaña 'Padre' (Cualquier email)
+      signInWithEmail(email, password);
+      setIsLoggedIn(true); // Marcar como inicio de sesión exitoso
+
+    }
   };
 
   return (
@@ -52,6 +67,7 @@ function App() {
                       <MDBTabsItem>
                         <MDBTabsLink onClick={() => handleJustifyClick('tab1')} active={justifyActive === 'tab1'} style={{ color: justifyActive === 'tab1' ? '#030760' : '#fff', backgroundColor: justifyActive === 'tab1' ? '#fff' : 'transparent', borderRadius: '50rem', padding: '5px', fontWeight: '500' }}>
                           Asistente
+                          
                         </MDBTabsLink>
                       </MDBTabsItem>
                       <MDBTabsItem>
@@ -63,6 +79,11 @@ function App() {
                     <MDBInput wrapperClass='mb-3' id='form3' type='email' placeholder='Username' style={{ borderRadius: '0', borderColor: '#030760', height: '40px', fontSize: '1rem' }} />
                     <MDBInput wrapperClass='mb-3' id='form4' type='password' placeholder='Contraseña' style={{ borderRadius: '0', borderColor: '#030760', height: '40px', fontSize: '1rem' }} />
                     <MDBBtn type="submit" className='w-100 mb-2' size='sm' style={{ backgroundColor: '#030760', borderRadius: '0', fontSize: '1rem', borderColor: '#030760', height: '40px' }}>Iniciar sesión</MDBBtn>
+                          {isLoggedIn && (
+                              <a href="../paginas/Home" className="text-decoration-none text-white d-block text-center mt-2">
+                                  Ir a la página de inicio
+                          </a>
+                          )}
                     <div className="text-center">
                       <p className="text-center fw-bold mb-2" style={{ fontSize: '1rem' }}>OR </p>
                     </div>
