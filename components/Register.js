@@ -12,6 +12,7 @@ const firebaseConfig = {
   appId: "1:467566675986:web:854441ea5c09d7d10db0cb",
   measurementId: "G-CRZTJFTW85"
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
@@ -19,21 +20,33 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [confirming, setConfirming] = useState(false);
 
-  const handleRegister = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+  const handleRegister = async () => {
+    if (!confirming) {
+      // Si no se ha confirmado, muestra una alerta de confirmación
+      if (window.confirm("¿Estás seguro de que deseas registrar esta información?")) 
+        setConfirming(true); // Marca como confirmado
+      
+      // Si se ha confirmado, procede con el registro
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         // Usuario registrado exitosamente
         const user = userCredential.user;
         console.log("Usuario registrado:", user);
+        alert('Registro exitoso');
+
         setError('');
-      })
-      .catch((error) => {
+      } catch (error) {
         // Manejo de errores
         const errorMessage = error.message;
+        alert('Error en el registro');
+
         setError(errorMessage);
-      });
+      }
+    }
   };
+  
 
   return (
     <div>
